@@ -43,13 +43,34 @@
             console.error(error);
         });
         */
+        navigator.permissions.query({name: 'magnetometer'})
+            .then((result) => {
+                if (result.state === 'granted') {
+                    console.log('You can use Magnetometer');
+                } else if (result.state === 'denied') {
+                    console.log('You cannot use Magnetometer.');
+                } else if (result.state === 'prompt') {
+                    console.log('You need the permission to use Magnetometer.');
+                }
 
-        window.addEventListener("devicemotion", function (e) {
-            var acc = e.acceleration;
-            document.getElementById("x").innerHTML = acc.x.toFixed(3);
-            document.getElementById("y").innerHTML = acc.y.toFixed(3);
-            document.getElementById("z").innerHTML = acc.z.toFixed(3);
-        });
+                const sensor = new Magnetometer();
+
+                sensor.addEventListener('activate', (event) => {
+                    console.log('Magnetometer was activated.');
+                });
+
+                window.addEventListener('reading', function(event) {
+                    document.getElementById("x").innerHTML = sensor.x.toFixed(3);
+                    document.getElementById("y").innerHTML = sensor.y.toFixed(3);
+                    document.getElementById("z").innerHTML = sensor.z.toFixed(3);
+                });
+
+                sensor.addEventListener('error', (event) => {
+                    console.log(event.error);
+                });
+
+                sensor.start();
+            });
     </script>
 
     </body>
