@@ -12,7 +12,19 @@
     <p> z = <span id="z"> </span></p>
 
     <script>
+        let magSensor = new Magnetometer({frequency: 60});
 
+        magSensor.addEventListener('reading', e => {
+            console.log("Magnetic field along the X-axis " + magSensor.x);
+            console.log("Magnetic field along the Y-axis " + magSensor.y);
+            console.log("Magnetic field along the Z-axis " + magSensor.z);
+        })
+        magSensor.addEventListener('error', event => {
+            console.log(event.error.name, event.error.message);
+        })
+        magSensor.start();
+
+        <!--
         const sensor = new Magnetometer();
         sensor.start();
 
@@ -22,6 +34,8 @@
         sensor.addEventListener('error', error => {
             console.error(error);
         });
+        -->
+
         <!--
         window.addEventListener("deviceorientation", function (e) {
             var acc = e.alpha;
