@@ -4,19 +4,22 @@
         <meta chareset="UTF-8">
         <title> Sensor Test</title>
         <meta name="viewpoint" content="width=device-width">
+        <style type="text/css">
+            p.val {font-size: 20px;}
+        </style>
     </head>
 
     <body>
 
-    <p> x = <span id="x"> </span></p>
-    <p> y = <span id="y"> </span></p>
-    <p> z = <span id="z"> </span></p>
+    <p class="val"> x = <span id="x"> </span></p>
+    <p class="val"> y = <span id="y"> </span></p>
+    <p class="val"> z = <span id="z"> </span></p>
 
     <script>
 
-        window.addEventListener("devicemotion", function (e) {
-            var acc = e.acceleration;
-            document.getElementById("x").innerHTML = acc.x;
+        window.addEventListener("deviceorientation", function (e) {
+            var acc = e.alpha;
+            document.getElementById("x").innerHTML = acc.x.toFixed(3);
             document.getElementById("y").innerHTML = acc.y.toFixed(3);
             document.getElementById("z").innerHTML = acc.z.toFixed(3);
         });
