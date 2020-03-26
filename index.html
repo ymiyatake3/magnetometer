@@ -12,13 +12,26 @@
     <p> z = <span id="z"> </span></p>
 
     <script>
+
+        const sensor = new Magnetometer();
+        sensor.start();
+
+        sensor.addEventListener('activate', () ={
+            console.log('Ready to report readings');
+        });
+        sensor.addEventListener('error', error => {
+            console.error(error);
+        });
+        <!--
         window.addEventListener("deviceorientation", function (e) {
             var acc = e.alpha;
             document.getElementById("x").innerHTML = acc.x.toFixed(3);
             document.getElementById("y").innerHTML = acc.y.toFixed(3);
             document.getElementById("z").innerHTML = acc.z.toFixed(3);
         });
+        -->
     </script>
+
     </body>
 </html>
 
