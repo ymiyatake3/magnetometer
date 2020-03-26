@@ -8,11 +8,18 @@
 
     <body>
 
-    <p> x = <span id="x"> </p>
-    <p> y = <span id="y"> </p>
-    <p> z = <span id="z"> </p>
+    <p> x = <span id="x"> </span>></p>
+    <p> y = <span id="y"> </span>></p>
+    <p> z = <span id="z"> </span>></p>
 
     <script>
+
+        window.addEventListener("devicemotion", function (e) {
+            var acc = e.acceleration;
+            document.getElementById("x").innerHTML = acc.x.toFixed(3);
+            document.getElementById("y").innerHTML = acc.y.toFixed(3);
+            document.getElementById("z").innerHTML = acc.z.toFixed(3);
+        });
     </script>
     </body>
 </html>
