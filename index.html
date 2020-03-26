@@ -16,7 +16,7 @@
 
         window.addEventListener("devicemotion", function (e) {
             var acc = e.acceleration;
-            document.getElementById("x").innerHTML = acc.x.toFixed(3);
+            document.getElementById("x").innerHTML = acc.x;
             document.getElementById("y").innerHTML = acc.y.toFixed(3);
             document.getElementById("z").innerHTML = acc.z.toFixed(3);
         });
