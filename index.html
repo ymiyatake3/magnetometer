@@ -24,23 +24,86 @@
 
     <!-- <script type="text/javascript"> -->
     <script>
-    function handleReading(e) {
-        const container = document.getElementById('root');
+        //0. make the window loads the function "windowLoadHandler" when first launched
+        window.addEventListener("load", windowLoadHandler, false);
+        //if ( location.protocol != "https:" ) {
+        //        location.href = "https:" + window.location.href.substring( window.location.protocol.length );
+        //}
+        //1.make the window listen to accelerometer
+        try {
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') {
+                            permissionOrientation = "granted";
+                            window.addEventListener("deviceorientation", handleOrientation, true);
+                        } else {
+                            permissionOrientation = "notgranted";
+                        }
+                    })
+                    .catch(console.error);
+            } else {
+                permissionOrientation = typeof DeviceMotionEvent.requestPermission
+            }
+        }
+        catch(error) {
+            permissionOrientation = "error";
+            console.error(error);
+        }
 
-        console.log(e);
-        container.innerHTML = `${e.target.x}, ${e.target.y}, ${e.target.z}`;
 
-        (() => {
-            const sensor = new Accelerometer();
+        function request_permission(){
+            if (
+                DeviceMotionEvent &&
+                DeviceMotionEvent.requestPermission &&
+                typeof DeviceMotionEvent.requestPermission === 'function'
+            ) {
+                DeviceMotionEvent.requestPermission();
+            }
+            if (
+                DeviceOrientationEvent &&
+                DeviceOrientationEvent.requestPermission &&
+                typeof DeviceOrientationEvent.requestPermission === 'function'
+            ) {
+                DeviceOrientationEvent.requestPermission();
+            }
+        }
 
-            sensor.addEventListener('reading', handleReading);
-            sensor.start();
-        })();
-    }
+        //window.addEventListener("deviceorientation", handleOrientation, true);
+
+        /*
+        function handleOrientation(event) {
+            absolute = event.absolute;
+            alpha    = event.alpha;
+            beta     = event.beta;
+            gamma    = event.gamma;
+            log("none,0,0,0,0");
+        }
+        */
+
+        function handleReading(e) {
+            const container = document.getElementById('root');
+
+            console.log(e);
+            container.innerHTML = `${e.target.x}, ${e.target.y}, ${e.target.z}`;
+
+            (() => {
+                const sensor = new Accelerometer();
+
+                sensor.addEventListener('reading', handleReading);
+                sensor.start();
+            })();
+        }
     </script>
 
 </head>
 <body>
+    <canvas id="canvasOne" width="" height="">
+        Your browser does not support HTML5 canvas.
+    </canvas>
+    <button type = "button" onclick = "request_permission()">
+        request_permission
+    </button>
 
 </body>
 </html>
