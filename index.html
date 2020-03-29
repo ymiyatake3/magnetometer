@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex,nofollow" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> -->
+    <meta name="viewport" content="initial-scale=1.0">
+
+    <style type="text/css">
+        h4 {font-family: sans-serif;}
+        p {font-family: sans-serif;}
+        a {font-family: sans-serif; color:#d15423; text-decoration:none;}
+        body {
+            margin: 0;
+        }
+    </style>
+
+
+    <title>Study 1</title>
+
+    <!-- <script type="text/javascript"> -->
+    <script>
+    function handleReading(e) {
+        const container = document.getElementById('root');
+
+        console.log(e);
+        container.innerHTML = `${e.target.x}, ${e.target.y}, ${e.target.z}`;
+
+        (() => {
+            const sensor = new Accelerometer();
+
+            sensor.addEventListener('reading', handleReading);
+            sensor.start();
+        })();
+    }
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
