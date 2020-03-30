@@ -31,7 +31,6 @@
         }
 
         function init() {
-            const sensor = new Magnetometer({frequency: 60});
 
             // Check for Magnetometer API permissions
             navigator.permissions.query({name: "magnetometer"}).then(function (p) {
@@ -41,7 +40,7 @@
                     updatePermission(this.state);
                 };
             });
-
+            const sensor = new Magnetometer({frequency: 60});
             sensor.addEventListener('reading', function(e) {
                 document.getElementById("value").innerHTML = 'x: ' + e.target.x + '<br> y: ' + e.target.y + '<br> z: ' + e.target.z;
             });
