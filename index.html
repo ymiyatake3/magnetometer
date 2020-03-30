@@ -24,65 +24,51 @@
 
     <!-- <script type="text/javascript"> -->
     <script>
-        //0. make the window loads the function "windowLoadHandler" when first launched
-        window.addEventListener("load", windowLoadHandler, false);
-        //if ( location.protocol != "https:" ) {
-        //        location.href = "https:" + window.location.href.substring( window.location.protocol.length );
-        //}
-        //1.make the window listen to accelerometer
-        try {
-            if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                DeviceMotionEvent.requestPermission()
-                    .then(permissionState => {
-                        if (permissionState === 'granted') {
-                            permissionOrientation = "granted";
-                            window.addEventListener("deviceorientation", handleOrientation, true);
-                        } else {
-                            permissionOrientation = "notgranted";
-                        }
-                    })
-                    .catch(console.error);
-            } else {
-                permissionOrientation = typeof DeviceMotionEvent.requestPermission
-            }
-        }
-        catch(error) {
-            permissionOrientation = "error";
-            console.error(error);
-        }
-
-
-        function request_permission(){
-            if (
-                DeviceMotionEvent &&
-                DeviceMotionEvent.requestPermission &&
-                typeof DeviceMotionEvent.requestPermission === 'function'
-            ) {
-                DeviceMotionEvent.requestPermission();
-            }
-            if (
-                DeviceOrientationEvent &&
-                DeviceOrientationEvent.requestPermission &&
-                typeof DeviceOrientationEvent.requestPermission === 'function'
-            ) {
-                DeviceOrientationEvent.requestPermission();
-            }
-        }
-
-        //window.addEventListener("deviceorientation", handleOrientation, true);
-
         /*
-        function handleOrientation(event) {
-            absolute = event.absolute;
-            alpha    = event.alpha;
-            beta     = event.beta;
-            gamma    = event.gamma;
-            log("none,0,0,0,0");
+        function request_permission() {
+            navigator.permissions.query({name: "magnetometer", userVisibleOnly:false}).then(({state}) => {
+                console.log("Permission " + state);
+                switch (state) {
+                    case "granted":
+
+                        break;
+                    case "prompt":
+
+                        break;
+                    default:
+                        // Do nothing when permission is denied.
+                        break;
+                }
+            });
         }
         */
 
+        function updatePermission(name, state) {
+            log("update permission for " + name + " with " + state);
+            document.getElementById(name).textContent = state;
+        }
+
+        function init() {
+            const sensor = new Magnetometer({frequency: 60});
+
+            // Check for Magnetometer API permissions
+            navigator.permissions.query({name: "magnetometer"}).then(function (p) {
+                updatePermission("magnetometer", p.state);
+
+                p.onchange = function () {
+                    updatePermission("magnetometer", this.state);
+                };
+            });
+
+            sensor.addEventListener('reading', function(e) {
+                document.getElementById("value").innerHTML = 'x: ' + e.target.x + '<br> y: ' + e.target.y + '<br> z: ' + e.target.z;
+            });
+            sensor.start();
+        }
+
+    /*
         function handleReading(e) {
-            const container = document.getElementById('root');
+            const container = document.getElementById("value");
 
             console.log(e);
             container.innerHTML = `${e.target.x}, ${e.target.y}, ${e.target.z}`;
@@ -94,6 +80,7 @@
                 sensor.start();
             })();
         }
+     */
     </script>
 
 </head>
@@ -101,9 +88,8 @@
     <canvas id="canvasOne" width="" height="">
         Your browser does not support HTML5 canvas.
     </canvas>
-    <button type = "button" onclick = "request_permission()">
-        request_permission
-    </button>
+    <div id="value"> Magnetic Field Value </div>
+    <button type = "button" onclick = "init()"> start </button>
 
 </body>
 </html>
