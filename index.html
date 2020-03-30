@@ -24,28 +24,10 @@
 
     <!-- <script type="text/javascript"> -->
     <script>
-        /*
-        function request_permission() {
-            navigator.permissions.query({name: "magnetometer", userVisibleOnly:false}).then(({state}) => {
-                console.log("Permission " + state);
-                switch (state) {
-                    case "granted":
 
-                        break;
-                    case "prompt":
-
-                        break;
-                    default:
-                        // Do nothing when permission is denied.
-                        break;
-                }
-            });
-        }
-        */
-
-        function updatePermission(name, state) {
-            log("update permission for " + name + " with " + state);
-            document.getElementById(name).textContent = state;
+        function updatePermission(state) {
+            log("update permission with " + state);
+            document.getElementById("permission").textContent = state;
         }
 
         function init() {
@@ -56,7 +38,7 @@
                 updatePermission("magnetometer", p.state);
 
                 p.onchange = function () {
-                    updatePermission("magnetometer", this.state);
+                    updatePermission(this.state);
                 };
             });
 
@@ -90,6 +72,7 @@
     </canvas>
     <div id="value"> Magnetic Field Value </div>
     <button type = "button" onclick = "init()"> start </button>
+    <div id="permission"></div>
 
 </body>
 </html>
